@@ -6,7 +6,7 @@ At the heart of it is an Dell Precision T3620, customized to handle everything f
 
 <img src="https://github.com/djamelinfo/myhomelab/raw/main/images/IMG_20241120_105814773.jpg" alt="Rack Setup" width="600"/>
 
-## 1. Main Server: HP ProDesk 400 G4 SFF running Proxmox
+## 1. Main Server: Dell Precision T3620 running Proxmox
 
 <img src="https://github.com/djamelinfo/myhomelab/raw/main/images/Screenshot_20241101_135806_Chrome.jpg" alt="Proxmox" width="600"/>
 
