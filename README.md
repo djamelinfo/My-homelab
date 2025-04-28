@@ -1,5 +1,3 @@
-# My HomeLab
-
 # **Home Lab Setup**
 
 This is my personal homelab setup, awakening my home with various services and tools. I hope this setup can inspire you as you build your own homelab!
