@@ -58,7 +58,7 @@ At the heart of it is an Dell Precision T3620, customized to handle everything f
 - **RAM**: 4GB
 - **Storage**: 128GB SSD
 - **Running Services in Docker**:
-    - [**Homer Dashboard**](https://github.com/bastienwirtz/homer): Docker containers, including a customizable dashboard![](/api/files/01965dad-0eb9-71dd-954a-f4b1dcd8a801/image.png)
+    - [**Homer Dashboard**](https://github.com/bastienwirtz/homer): Docker containers, including a customizable dashboard![](https://github.com/djamelinfo/My-homelab/blob/main/images/Capture%20d'%C3%A9cran%202025-04-22%20152529.png)
     - [**Pi-hole**](https://pi-hole.net/): Network-wide ad blocker
     - [**PiKVM**](https://github.com/pikvm/pikvm): IP-KVM based on Raspberry Pi
 
