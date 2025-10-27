@@ -74,7 +74,6 @@ Running Services (Docker)
 - [Pi-hole](https://pi-hole.net/)
 - [PiKVM](https://github.com/pikvm/pikvm)
 - [CloudFlare DDNS](https://hub.docker.com/r/oznu/cloudflare-ddns/)
-- [Homer Dashboard]()
 
 ### Raspberry Pi 5
 
