@@ -1,4 +1,4 @@
-# HOME LAB SETUP
+# Homelab Setup
 
 Personal homelab rig for media, storage, automation, and tinkering.
 Primary host runs `Proxmox`, storage managed by `TrueNAS`. Rack idle ~150W.
@@ -82,7 +82,7 @@ Virtual Machines (VMs)
 
 
 ```
-CPU : Intel i3-6500
+CPU : Intel i5-6500
 RAM : 8 GB
 Storage
   • 256 GB SSD (OS)
