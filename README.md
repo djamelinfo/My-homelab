@@ -37,19 +37,26 @@ Virtual Machines (VMs)
 - Pop!_OS VM with (GPU passthrough) runing:
   - [Ollama](https://ollama.com/)
   - [Immich machine learning](https://docs.immich.app/guides/remote-machine-learning/)
-  - [Open WebUi](https://docs.openwebui.com/) <img src="images/openwebui.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
+  - [Open WebUi](https://docs.openwebui.com/) 
+  - <img src="images/openwebui.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
   - [SearXNG](https://docs.searxng.org/)
   - [Redis](https://redis.io/docs/latest/operate/oss_and_stack/)
 - Debian VM (website hosting)
   - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
 
 Other Services (LXC)
-- [Frigate](https://frigate.video/): real-time surveillance with Coral TPU <img src="images/frigate.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
-- [Jellyfin](https://jellyfin.org/): media streaming <img src="images/Jellyfin.jpg" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
-- [Immich](https://immich.app/): AI photo management <img src="images/immich.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
-- [NextcloudPi](https://ownyourbits.com/nextcloudpi/): self-hosted files/collab <img src="images/nextcloud.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
-- [Gitea](https://gitea.io/en-us/): self-hosted Git <img src="images/gitea.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;">
-- [Docmost](https://docmost.com/docs/category/self-hosting/): an open-source collaborative wiki and documentation software. <img src="images/docmost.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;"> 
+- [Frigate](https://frigate.video/): real-time surveillance with Coral TPU. 
+- <img src="images/frigate.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200" >
+- [Jellyfin](https://jellyfin.org/): media streaming. 
+- <img src="images/Jellyfin.jpg" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
+- [Immich](https://immich.app/): AI photo management. 
+- <img src="images/immich.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
+- [NextcloudPi](https://ownyourbits.com/nextcloudpi/): self-hosted files/collab. 
+- <img src="images/nextcloud.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
+- [Gitea](https://gitea.io/en-us/): self-hosted Git.
+- <img src="images/gitea.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200">
+- [Docmost](https://docmost.com/docs/category/self-hosting/): an open-source collaborative wiki and documentation software. 
+- <img src="images/docmost.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
 - [karakeep](https://github.com/karakeep-app/karakeep): is a self-hostable bookmark-everything app with a touch of AI for the data hoarders out there.
 - [Vikunja](https://vikunja.io/): Vikunja, the fluffy, open-source, self-hostable to-do app.
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker
@@ -90,7 +97,8 @@ Storage: 128 GB SSD
 ```
 
 Running Services (Docker)
-- [Homer Dashboard](https://github.com/bastienwirtz/homer): A dead simple static homepage. <img src="images/homer.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;"> 
+- [Homer Dashboard](https://github.com/bastienwirtz/homer): A dead simple static homepage. 
+- <img src="images/homer.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker.
 - [PiKVM](https://github.com/pikvm/pikvm): Raspberry Pi-based KVM (Keyboard-Video-Mouse).
 - [CloudFlare DDNS](https://hub.docker.com/r/oznu/cloudflare-ddns/)
