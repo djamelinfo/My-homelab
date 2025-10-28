@@ -1,3 +1,5 @@
+###### [Homelab](https://linuxhandbook.com/homelab/)? it's a home server used as a laboratory for testing, developing or for home and functional usage.
+
 # Homelab Setup
 
 Personal homelab rig for media, storage, automation, and tinkering.
