@@ -47,11 +47,15 @@ Other Services (LXC)
 - [Frigate](https://frigate.video/): real-time surveillance with Coral TPU <img src="images/frigate.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
 - [Jellyfin](https://jellyfin.org/): media streaming <img src="images/Jellyfin.jpg" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
 - [Immich](https://immich.app/): AI photo management <img src="images/immich.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
-- [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
 - [NextcloudPi](https://ownyourbits.com/nextcloudpi/): self-hosted files/collab <img src="images/nextcloud.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
-- [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
-- [Gitea](https://gitea.io/en-us/): self-hosted Git <img src="images/gitea.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
+- [Gitea](https://gitea.io/en-us/): self-hosted Git <img src="images/gitea.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;">
+- [Docmost](https://docmost.com/docs/category/self-hosting/): an open-source collaborative wiki and documentation software. <img src="images/docmost.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;"> 
+- [karakeep](https://github.com/karakeep-app/karakeep): is a self-hostable bookmark-everything app with a touch of AI for the data hoarders out there.
+- [Vikunja](https://vikunja.io/): Vikunja, the fluffy, open-source, self-hostable to-do app.
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker
+- [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
+- [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
+- [MeTub](https://github.com/alexta69/metube): Web GUI for youtube-dl.
 
 ### Second Server ▸ Lenovo ThinkCenter 710Q
 
@@ -60,14 +64,23 @@ Other Services (LXC)
 CPU : Intel i3-7100T
 RAM : 16 GB
 Storage
-  • 1 TB NVMe (OS)
+  • 512 TB NVMe (OS)
   • 1 TB 2.5" HDD
-  • 4 TB 2.5" HDD
-  • 5 TB 2.5" HDD
 ```
 
 Virtual Machines (VMs)
 - [Proxmox Backup Server](https://www.proxmox.com/en/proxmox-backup-server)
+
+### TrueNas Backup Server ▸ Hp ProDesk 400 G4
+
+
+```
+CPU : Intel i3-6500
+RAM : 8 GB
+Storage
+  • 256 SSD (OS)
+  • 3 * 2 TB 2.5" HDD (RAIDZ1)
+```
 
 ### Raspberry Pi 4
 
@@ -77,10 +90,12 @@ Storage: 128 GB SSD
 ```
 
 Running Services (Docker)
-- [Homer Dashboard](https://github.com/bastienwirtz/homer)
-- [Pi-hole](https://pi-hole.net/)
-- [PiKVM](https://github.com/pikvm/pikvm)
+- [Homer Dashboard](https://github.com/bastienwirtz/homer): A dead simple static homepage. <img src="images/homer.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;"> 
+- [Pi-hole](https://pi-hole.net/): network-wide ad blocker.
+- [PiKVM](https://github.com/pikvm/pikvm): Raspberry Pi-based KVM (Keyboard-Video-Mouse).
 - [CloudFlare DDNS](https://hub.docker.com/r/oznu/cloudflare-ddns/)
+- [Dockpeek](https://github.com/dockpeek/dockpeek): self-hosted Docker dashboard for quick access to my containers.
+- [Termix](https://github.com/Termix-SSH/Termix): Termix is web-base SSH terminal access.
 
 ### Raspberry Pi 5
 
@@ -89,7 +104,13 @@ RAM    : 4 GB
 Storage: 120 GB SSD
 ```
 
-Running Services
+
+### Raspberry Pi 4
+
+```
+RAM    : 4 GB
+Storage: 128 GB SSD
+```
 
 ### Networking Equipment
 
