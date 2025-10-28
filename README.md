@@ -25,25 +25,32 @@ Power  : ~65 W average
 Storage Layout
   • 1 TB NVMe SSD (VM storage)
   • 3 × 256 GB SATA SSD
-  • 2 TB 2.5" HDD
+  • 4 TB 3.5" HDD (Frigate recording)
   • 4 × 4 TB 3.5" HDD (RAIDZ1 via SAS→SATA HBA, passed to TrueNAS VM)
 ```
 
 Virtual Machines (VMs)
 - [Home Assistant](https://www.home-assistant.io/)
 - [TrueNAS](https://www.truenas.com/) for storage management
-- Windows VM (GPU passthrough)
-- Pop!_OS VM (running an Olama model)
+- Windows VM with (GPU passthrough) runing:
+  - [Steam](https://store.steampowered.com/?l=french)
+- Pop!_OS VM with (GPU passthrough) runing:
+  - [Ollama](https://ollama.com/)
+  - [Immich machine learning](https://docs.immich.app/guides/remote-machine-learning/)
+  - [Open WebUi](https://docs.openwebui.com/) <img src="images/openwebui.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
+  - [SearXNG](https://docs.searxng.org/)
+  - [Redis](https://redis.io/docs/latest/operate/oss_and_stack/)
 - Debian VM (website hosting)
+  - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
 
 Other Services (LXC)
-- [Frigate](https://frigate.video/): real-time surveillance with Coral TPU
-- [Jellyfin](https://jellyfin.org/): media streaming
-- [PhotoPrism](https://photoprism.app/): AI photo management
-- [Nginx](https://www.nginx.com/): web server and reverse proxy
-- [NextcloudPi](https://ownyourbits.com/nextcloudpi/): self-hosted files/collab
+- [Frigate](https://frigate.video/): real-time surveillance with Coral TPU <img src="images/frigate.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
+- [Jellyfin](https://jellyfin.org/): media streaming <img src="images/Jellyfin.jpg" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
+- [Immich](https://immich.app/): AI photo management <img src="images/immich.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
+- [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
+- [NextcloudPi](https://ownyourbits.com/nextcloudpi/): self-hosted files/collab <img src="images/nextcloud.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
-- [Gitea](https://gitea.io/en-us/): self-hosted Git
+- [Gitea](https://gitea.io/en-us/): self-hosted Git <img src="images/gitea.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;">
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker
 
 ### Second Server ▸ Lenovo ThinkCenter 710Q
