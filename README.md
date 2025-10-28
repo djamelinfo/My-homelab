@@ -124,6 +124,7 @@ Storage: 128 GB SSD
 
 ## Networking Equipment
 
+- Eaton Ellipse PRO 1200: UPS for core rack equipment
 - UniFi Cloud Gateway Ultra — routing + management
 - UniFi U6 LR — long-range Wi‑Fi 6 AP
 - UniFi U6 IW — in‑wall Wi‑Fi 6 AP
