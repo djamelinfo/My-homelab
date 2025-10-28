@@ -4,12 +4,12 @@ Personal homelab rig for media, storage, automation, and tinkering.
 Primary host runs `Proxmox`, storage managed by `TrueNAS`. Rack idle ~150W.
 
 
-### About
+## About
 
 This is my personal homelab setup. Hopefully it sparks ideas for your own!
 At the core is a Dell Precision T3620 customized for a quiet, efficient rack.
 
-### Main Server ▸ Dell Precision T3620 (Proxmox)
+## Main Server ▸ Dell Precision T3620 (Proxmox)
 
 Spec sheet
 
@@ -32,9 +32,9 @@ Storage Layout
 Virtual Machines (VMs)
 - [Home Assistant](https://www.home-assistant.io/)
 - [TrueNAS](https://www.truenas.com/) for storage management
-- Windows VM with (GPU passthrough) runing:
+- Windows VM with (GPU passthrough) running:
   - [Steam](https://store.steampowered.com/?l=french)
-- Pop!_OS VM with (GPU passthrough) runing:
+- Pop!_OS VM with (GPU passthrough) running:
   - [Ollama](https://ollama.com/)
   - [Immich machine learning](https://docs.immich.app/guides/remote-machine-learning/)
   - [Open WebUi](https://docs.openwebui.com/) 
@@ -64,32 +64,32 @@ Other Services (LXC)
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
 - [MeTub](https://github.com/alexta69/metube): Web GUI for youtube-dl.
 
-### Second Server ▸ Lenovo ThinkCenter 710Q
+## Second Server ▸ Lenovo ThinkCenter 710q
 
 
 ```
 CPU : Intel i3-7100T
 RAM : 16 GB
 Storage
-  • 512 TB NVMe (OS)
+  • 512 GB NVMe (OS)
   • 1 TB 2.5" HDD
 ```
 
 Virtual Machines (VMs)
 - [Proxmox Backup Server](https://www.proxmox.com/en/proxmox-backup-server)
 
-### TrueNas Backup Server ▸ Hp ProDesk 400 G4
+## TrueNAS Backup Server ▸ HP ProDesk 400 G4
 
 
 ```
 CPU : Intel i3-6500
 RAM : 8 GB
 Storage
-  • 256 SSD (OS)
-  • 3 * 2 TB 2.5" HDD (RAIDZ1)
+  • 256 GB SSD (OS)
+  • 3 × 2 TB 2.5" HDD (RAIDZ1)
 ```
 
-### Raspberry Pi 4
+## Raspberry Pi 4
 
 ```
 RAM    : 4 GB
@@ -103,9 +103,9 @@ Running Services (Docker)
 - [PiKVM](https://github.com/pikvm/pikvm): Raspberry Pi-based KVM (Keyboard-Video-Mouse).
 - [CloudFlare DDNS](https://hub.docker.com/r/oznu/cloudflare-ddns/)
 - [Dockpeek](https://github.com/dockpeek/dockpeek): self-hosted Docker dashboard for quick access to my containers.
-- [Termix](https://github.com/Termix-SSH/Termix): Termix is web-base SSH terminal access.
+- [Termix](https://github.com/Termix-SSH/Termix): Termix is web-based SSH terminal access.
 
-### Raspberry Pi 5
+## Raspberry Pi 5
 
 ```
 RAM    : 4 GB
@@ -113,14 +113,14 @@ Storage: 120 GB SSD
 ```
 
 
-### Raspberry Pi 4
+## Second Raspberry Pi 4 as backup
 
 ```
 RAM    : 4 GB
 Storage: 128 GB SSD
 ```
 
-### Networking Equipment
+## Networking Equipment
 
 - UniFi Cloud Gateway Ultra — routing + management
 - UniFi U6 LR — long-range Wi‑Fi 6 AP
