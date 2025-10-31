@@ -45,6 +45,7 @@ Virtual Machines (VMs)
   - [Redis](https://redis.io/docs/latest/operate/oss_and_stack/)
 - Debian VM (website hosting)
   - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
+  - [Nginx](https://nginx.org/en/docs/beginners_guide.html): hosting my website
 
 Other Services (LXC)
 - [Frigate](https://frigate.video/): real-time surveillance with Coral TPU. 
