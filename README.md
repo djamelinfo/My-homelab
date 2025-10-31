@@ -79,6 +79,7 @@ Storage
 
 Virtual Machines (VMs)
 - [Proxmox Backup Server](https://www.proxmox.com/en/proxmox-backup-server)
+- 3 vm [Ubuntu Server 24.04](https://cloud-images.ubuntu.com/releases/) as [K3s](https://k3s.io/) kube cluster.
 
 ## TrueNAS Backup Server ▸ HP ProDesk 400 G4
 
