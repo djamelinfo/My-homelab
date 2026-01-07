@@ -17,12 +17,12 @@ Spec sheet
 
 ```
 CPU    : Intel i7-7700
-RAM    : 48 GB
+RAM    : 64 GB
 GPU    : NVIDIA Quadro RTX 4000 (occasional gaming, LLMs)
 TPU    : Coral USB (accelerates Frigate object detection)
 PSU    : Cooler Master MWE 650 Bronze
 Cooling: Added extra fan for airflow
-Power  : ~65 W average
+Power  : ~85 W average
 
 Storage Layout
   • 1 TB NVMe SSD (VM storage)
@@ -32,7 +32,6 @@ Storage Layout
 ```
 
 Virtual Machines (VMs)
-- [Home Assistant](https://www.home-assistant.io/)
 - [TrueNAS](https://www.truenas.com/) for storage management
 - Windows VM with (GPU passthrough) running:
   - [Steam](https://store.steampowered.com/?l=french)
@@ -43,9 +42,7 @@ Virtual Machines (VMs)
   - <img src="images/openwebui.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
   - [SearXNG](https://docs.searxng.org/)
   - [Redis](https://redis.io/docs/latest/operate/oss_and_stack/)
-- Debian VM (website hosting)
-  - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
-  - [Nginx](https://nginx.org/en/docs/beginners_guide.html): hosting my website
+- 3 vm [Ubuntu Server 24.04](https://cloud-images.ubuntu.com/releases/) as [K3s](https://k3s.io/) kube cluster.
 
 Other Services (LXC)
 - [Frigate](https://frigate.video/): real-time surveillance with Coral TPU. 
@@ -75,12 +72,16 @@ CPU : Intel i3-7100T
 RAM : 16 GB
 Storage
   • 512 GB NVMe (OS)
-  • 1 TB 2.5" HDD
 ```
 
 Virtual Machines (VMs)
-- [Proxmox Backup Server](https://www.proxmox.com/en/proxmox-backup-server)
-- 3 vm [Ubuntu Server 24.04](https://cloud-images.ubuntu.com/releases/) as [K3s](https://k3s.io/) kube cluster.
+- [Home Assistant](https://www.home-assistant.io/)
+- Debian VM (website hosting)
+  - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
+  - [Nginx](https://nginx.org/en/docs/beginners_guide.html): hosting my website
+
+Other Services (LXC)
+- [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
 
 ## TrueNAS Backup Server ▸ HP ProDesk 400 G4
 
@@ -99,16 +100,8 @@ Storage
 RAM    : 4 GB
 Storage: 128 GB SSD
 ```
-
-Running Services (Docker)
-- [Homer Dashboard](https://github.com/bastienwirtz/homer): A dead simple static homepage. 
-- <img src="images/homer.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
-- [Pi-hole](https://pi-hole.net/): network-wide ad blocker.
+Running Services
 - [PiKVM](https://github.com/pikvm/pikvm): Raspberry Pi-based KVM (Keyboard-Video-Mouse).
-- [CloudFlare DDNS](https://hub.docker.com/r/oznu/cloudflare-ddns/)
-- [Dockpeek](https://github.com/dockpeek/dockpeek): self-hosted Docker dashboard for quick access to my containers.
-- [Termix](https://github.com/Termix-SSH/Termix): Termix is web-based SSH terminal access.
-
 ## Raspberry Pi 5
 
 ```
@@ -116,6 +109,13 @@ RAM    : 4 GB
 Storage: 120 GB SSD
 ```
 
+Running Services (Docker)
+- [Homer Dashboard](https://github.com/bastienwirtz/homer): A dead simple static homepage. 
+- <img src="images/homer.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
+- [Pi-hole](https://pi-hole.net/): network-wide ad blocker.
+- [CloudFlare DDNS](https://hub.docker.com/r/oznu/cloudflare-ddns/)
+- [Dockpeek](https://github.com/dockpeek/dockpeek): self-hosted Docker dashboard for quick access to my containers.
+- [Termix](https://github.com/Termix-SSH/Termix): Termix is web-based SSH terminal access.
 
 ## Second Raspberry Pi 4 as backup
 
