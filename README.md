@@ -60,7 +60,6 @@ Other Services (LXC)
 - [karakeep](https://github.com/karakeep-app/karakeep): is a self-hostable bookmark-everything app with a touch of AI for the data hoarders out there.
 - [Vikunja](https://vikunja.io/): Vikunja, the fluffy, open-source, self-hostable to-do app.
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker
-- [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
 - [MeTub](https://github.com/alexta69/metube): Web GUI for youtube-dl.
 
@@ -126,9 +125,11 @@ Storage: 128 GB SSD
 
 ## Networking Equipment
 
-- Eaton Ellipse PRO 1200: UPS for core rack equipment
-- UniFi Cloud Gateway Ultra — routing + management
-- UniFi U6 LR — long-range Wi‑Fi 6 AP
-- UniFi U6 IW — in‑wall Wi‑Fi 6 AP
-- UniFi Switch Lite 16 PoE — PoE for APs and devices
-- Netgear GS308PP (8‑port PoE) — PoE for devices like Raspberry Pi 5
+- UniFi Cloud Gateway Ultra: routing, firewall, and UniFi management
+- UniFi U6 LR: long-range WiFi 6 access point for main coverage
+- UniFi U6 IW: in-wall WiFi 6 access point for a room/office
+- UniFi Switch USW 24 PoE: PoE for APs and devices like Raspberry Pi 5
+
+## Power Equipment
+
+- Eaton Ellipse PRO 1200 UPS: backup power for core rack and network gear
