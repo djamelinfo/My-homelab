@@ -63,7 +63,7 @@ Other Services (LXC)
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
 - [MeTub](https://github.com/alexta69/metube): Web GUI for youtube-dl.
 
-## Second Server ▸ Lenovo ThinkCenter 710q
+## Second Server ▸ Lenovo ThinkCenter 710q (Proxmox)
 
 
 ```
