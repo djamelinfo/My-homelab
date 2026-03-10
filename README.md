@@ -56,6 +56,7 @@ Other Services (LXC)
 - [Vikunja](https://vikunja.io/): Vikunja, the fluffy, open-source, self-hostable to-do app.
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
 - [MeTub](https://github.com/alexta69/metube): Web GUI for youtube-dl.
+- [Crafty Controller](https://craftycontrol.com/): self-hosted Minecraft server manager and web control panel.
 
 ## Second Server ▸ Lenovo ThinkCenter 710q (Proxmox)
 
