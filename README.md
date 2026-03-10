@@ -2,39 +2,33 @@
 
 # Homelab Setup
 
-Personal homelab rig for media, storage, automation, and tinkering.
-Primary host runs `Proxmox`, storage managed by `TrueNAS`. Rack idle ~150W.
+This is my personal homelab rig for media, storage, automation, and tinkering. Hopefully it sparks ideas for your own!
 
 
-## About
-
-This is my personal homelab setup. Hopefully it sparks ideas for your own!
-At the core is a Dell Precision T3620 customized for a quiet, efficient rack.
-
-## Main Server ▸ Dell Precision T3620 (Proxmox)
+## Main Server ▸ Based on Dell Precision T3620 (Proxmox)
 
 Spec sheet
 
 ```
-CPU    : Intel i7-7700
-RAM    : 64 GB
-GPU    : NVIDIA Quadro RTX 4000 (occasional gaming, LLMs)
-TPU    : Coral USB (accelerates Frigate object detection)
-PSU    : Cooler Master MWE 650 Bronze
-Cooling: Added extra fan for airflow
-Power  : ~85 W average
+Case        : Cooler master silencio 500
+Motherboard : Dell Precision T3620
+CPU         : Intel i7-7700
+RAM         : 64 GB
+GPU         : NVIDIA Quadro RTX 4000 (occasional gaming, LLMs)
+TPU         : Coral USB (accelerates Frigate object detection)
+PSU         : Cooler Master MWE 650 Bronze
+Cooling     : Added extra fan for airflow
+Power       : ~100 W average
 
 Storage Layout
   • 1 TB NVMe SSD (VM storage)
   • 3 × 256 GB SATA SSD
   • 4 TB 3.5" HDD (Frigate recording)
-  • 4 × 4 TB 3.5" HDD (RAIDZ1 via SAS→SATA HBA, passed to TrueNAS VM)
+  • 4 × 4 TB 3.5" HDD (RAIDZ1 via SAS→SATA HBA LSI 9211-8i, passed to TrueNAS VM)
 ```
 
 Virtual Machines (VMs)
 - [TrueNAS](https://www.truenas.com/) for storage management
-- Windows VM with (GPU passthrough) running:
-  - [Steam](https://store.steampowered.com/?l=french)
 - Pop!_OS VM with (GPU passthrough) running:
   - [Ollama](https://ollama.com/)
   - [Immich machine learning](https://docs.immich.app/guides/remote-machine-learning/)
@@ -42,6 +36,7 @@ Virtual Machines (VMs)
   - <img src="images/openwebui.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
   - [SearXNG](https://docs.searxng.org/)
   - [Redis](https://redis.io/docs/latest/operate/oss_and_stack/)
+  - [Steam](https://store.steampowered.com/?l=french)
 - 3 vm [Ubuntu Server 24.04](https://cloud-images.ubuntu.com/releases/) as [K3s](https://k3s.io/) kube cluster.
 
 Other Services (LXC)
@@ -59,7 +54,6 @@ Other Services (LXC)
 - <img src="images/docmost.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
 - [karakeep](https://github.com/karakeep-app/karakeep): is a self-hostable bookmark-everything app with a touch of AI for the data hoarders out there.
 - [Vikunja](https://vikunja.io/): Vikunja, the fluffy, open-source, self-hostable to-do app.
-- [Pi-hole](https://pi-hole.net/): network-wide ad blocker
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
 - [MeTub](https://github.com/alexta69/metube): Web GUI for youtube-dl.
 
@@ -81,8 +75,9 @@ Virtual Machines (VMs)
 
 Other Services (LXC)
 - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
+- [Pi-hole](https://pi-hole.net/): network-wide ad blocker with DNS-Over-HTTPS
 
-## TrueNAS Backup Server ▸ HP ProDesk 400 G4
+## Third Server ▸ HP ProDesk 400 G4
 
 
 ```
@@ -93,14 +88,16 @@ Storage
   • 3 × 2 TB 2.5" HDD (RAIDZ1)
 ```
 
-## Raspberry Pi 4
+Virtual Machines (VMs)
+- [TrueNAS](https://www.truenas.com/) for backup storage management
+
+## Two Raspberry Pi 4 running [PiKVM](https://github.com/pikvm/pikvm)
 
 ```
 RAM    : 4 GB
-Storage: 128 GB SSD
+Storage: 32 GB SD Card
 ```
-Running Services
-- [PiKVM](https://github.com/pikvm/pikvm): Raspberry Pi-based KVM (Keyboard-Video-Mouse).
+
 ## Raspberry Pi 5
 
 ```
@@ -111,17 +108,13 @@ Storage: 120 GB SSD
 Running Services (Docker)
 - [Homer Dashboard](https://github.com/bastienwirtz/homer): A dead simple static homepage. 
 - <img src="images/homer.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
+- [Glance Dashboard](https://github.com/glanceapp/glance): self-hosted dashboard for feeds, widgets, and quick status pages.
+- <img src="images/glance.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker.
 - [CloudFlare DDNS](https://hub.docker.com/r/oznu/cloudflare-ddns/)
 - [Dockpeek](https://github.com/dockpeek/dockpeek): self-hosted Docker dashboard for quick access to my containers.
 - [Termix](https://github.com/Termix-SSH/Termix): Termix is web-based SSH terminal access.
-
-## Second Raspberry Pi 4 as backup
-
-```
-RAM    : 4 GB
-Storage: 128 GB SSD
-```
+- [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy): encrypted DNS proxy for DNSCrypt and DNS-over-HTTPS.
 
 ## Networking Equipment
 
