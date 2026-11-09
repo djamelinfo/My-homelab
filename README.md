@@ -22,9 +22,56 @@ Power       : ~100 W average
 
 Storage Layout
   • 1 TB NVMe SSD (VM storage)
-  • 3 × 256 GB SATA SSD
-  • 4 TB 3.5" HDD (Frigate recording)
-  • 4 × 4 TB 3.5" HDD (RAIDZ1 via SAS→SATA HBA LSI 9211-8i, passed to TrueNAS VM)
+  • 4 × 4 TB HDD (Home Data, RAIDZ1, passed to the TrueNAS VM)
+  • 3 × 4 TB HDD (Backup, RAIDZ1, passed to the TrueNAS VM)
+  • 1 × 6 TB HDD (Frigate recordings)
+  • 1 × 256 GB SATA SSD (Home Data cache)
+  • 1 × 256 GB SATA SSD (Proxmox VM backup)
+  • 1 × 256 GB SATA SSD (passed through to the Debian VM for Ollama model storage)
+```
+
+### Storage wiring
+
+I use one LSI SAS2008 HBA for the Home Data drives, cache SSD and Backup drives. The Frigate drive and the other two SSDs connect to the Dell motherboard SATA ports. Power comes from the Dell SATA_PWR connector and two Cooler Master cable harnesses.
+
+#### Power connections
+
+```text
+Dell SATA_PWR
+  ├── Home Data HDD 1 (4 TB)
+  ├── Home Data HDD 2 (4 TB)
+  ├── Home Data HDD 3 (4 TB)
+  └── Home Data HDD 4 (4 TB)
+
+Cooler Master harness 1
+  ├── Backup HDD 1 (4 TB)
+  ├── Backup HDD 2 (4 TB)
+  └── Backup HDD 3 (4 TB)
+
+Cooler Master harness 2
+  ├── Frigate HDD (6 TB)
+  ├── SSD 1: Home Data cache (256 GB)
+  ├── SSD 2: Proxmox VM backup (256 GB)
+  └── SSD 3: Ollama models, passed through to Debian (256 GB)
+```
+
+#### Data connections
+
+```text
+LSI SAS2008 HBA
+  ├── Home Data HDD 1 (4 TB)
+  ├── Home Data HDD 2 (4 TB)
+  ├── Home Data HDD 3 (4 TB)
+  ├── Home Data HDD 4 (4 TB)
+  ├── SSD 1: Home Data cache (256 GB)
+  ├── Backup HDD 1 (4 TB)
+  ├── Backup HDD 2 (4 TB)
+  └── Backup HDD 3 (4 TB)
+
+Dell motherboard SATA
+  ├── Frigate HDD (6 TB)
+  ├── SSD 2: Proxmox VM backup (256 GB)
+  └── SSD 3: Ollama models, passed through to Debian (256 GB)
 ```
 
 Virtual Machines (VMs)
@@ -37,7 +84,6 @@ Virtual Machines (VMs)
   - <img src="images/openwebui.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
   - [SearXNG](https://docs.searxng.org/)
   - [Redis](https://redis.io/docs/latest/operate/oss_and_stack/)
-  - [Steam](https://store.steampowered.com/?l=french)
 - 3 vm [Ubuntu Server 24.04](https://cloud-images.ubuntu.com/releases/) as [K3s](https://k3s.io/) kube cluster.
 
 Other Services (LXC)
@@ -55,7 +101,6 @@ Other Services (LXC)
 - <img src="images/docmost.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
 - [karakeep](https://github.com/karakeep-app/karakeep): is a self-hostable bookmark-everything app with a touch of AI for the data hoarders out there.
 - [Vikunja](https://vikunja.io/): Vikunja, the fluffy, open-source, self-hostable to-do app.
-- [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
 - [MeTub](https://github.com/alexta69/metube): Web GUI for youtube-dl.
 - [Crafty Controller](https://craftycontrol.com/): self-hosted Minecraft server manager and web control panel.
 
@@ -78,6 +123,7 @@ Virtual Machines (VMs)
 Other Services (LXC)
 - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker with DNS-Over-HTTPS
+- [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
 
 ## Third Server ▸ HP ProDesk 400 G4
 
