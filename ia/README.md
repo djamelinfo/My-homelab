@@ -36,7 +36,7 @@ I run Ollama and Open WebUI in a Debian 13 VM. Frigate runs in an LXC container,
 | Parallel requests | `1` |
 | Loaded models | `1` |
 | Local applications | Ollama, Open WebUI |
-| Remote Ollama clients | Frigate 0.18, Home Assistant LLM Vision |
+| Remote Ollama clients | Frigate 0.18.2, Home Assistant LLM Vision |
 
 ## Ollama settings
 
@@ -72,7 +72,7 @@ My `nvidia-smi` snapshot showed `7296 MiB / 8192 MiB` in use, leaving `896 MiB` 
 - I keep `OLLAMA_MAX_LOADED_MODELS` at `1`.
 - I use the 24-hour lifetime while remote requests stay responsive and the server reports no out-of-memory errors.
 - If GPU memory becomes tight, I will reduce the lifetime to between 30 minutes and 2 hours.
-- I will try `num_ctx=4096` only if real `prompt_eval_count` values stay comfortably below roughly 3000 tokens.
+- I keep `num_ctx=8192` while investigating oversized Frigate requests. My real usage tests already exceed a 4096-token context.
 - I avoid switching models during a Frigate or Home Assistant vision request. Ollama loads one model at a time, so a new model evicts the production model.
 
 ## Benchmark status
@@ -87,6 +87,16 @@ I ran a repeated benchmark locally on Debian while sampling GPU and CPU use ever
 | `gemma4:e2b` | 9/13 | 140.51 tok/s | 0.250 s | 3 264 MiB |
 
 `qwen3.5:9b` was the most accurate model and answered the image tests about three times faster than the 8B. The 8B used almost all four vCPUs during text generation while averaging only 45.6% GPU use. For now, I am keeping the 8B in production. I want to compare both models on anonymised Frigate frames and my exact Home Assistant prompts before I switch.
+
+## My tests around the house
+
+I also tested normal use by walking around the house while Frigate and Home Assistant LLM Vision remained active. Across two sessions, I observed 22 inference calls: 16 returned HTTP 200 and 6 were rejected for exceeding the 8192-token context. Matching Frigate logs confirmed that all six rejected calls came from Frigate. I have not yet attributed every successful call to an application or scored the descriptions for accuracy.
+
+The second session's debug logs showed the difference between object descriptions and review summaries. One image used 1085 tokens and completed in 3.40 seconds. A structured review with 37 images required 39541 tokens and was rejected. A six-image object description took 26.27 seconds, including about 11.3 seconds before processing began in the model runner.
+
+VRAM stayed at 7296 MiB in the sampled readings. My next test is to temporarily disable review GenAI on the cameras where it is enabled, measure object descriptions on their own, and then compare single-image descriptions. I have not applied those changes yet. Camera decoding errors also need investigation separately from Ollama.
+
+The [real usage results](ollama-benchmark-2026-11-09.md#my-real-usage-tests-with-frigate-and-llm-vision) include both sessions and the matched image counts.
 
 ## Monitoring
 

@@ -11,7 +11,7 @@ I ran this benchmark against the Ollama server in my Debian 13 AI VM.
 | Concurrency | `1` |
 | Quantization | Q4_K_M for all tested models |
 
-I tested only models that were already installed. I did not download, create or delete any models, and I left the server configuration unchanged. I sent requests one at a time with a four-second pause. After the last test, I loaded the production model again and restored its runtime `keep_alive` to 24 hours.
+For the controlled model comparison, I tested only models that were already installed. I did not download, create or delete any models, and I left the server configuration unchanged. I sent requests one at a time with a four-second pause. After the last test, I loaded the production model again and restored its runtime `keep_alive` to 24 hours. I later tested normal household activity with Frigate and LLM Vision running together.
 
 ## How I tested
 
@@ -159,6 +159,67 @@ The NVIDIA driver reported much more VRAM than Ollama `/api/ps`, especially for 
 
 During hot text generation, the 8B averaged 92.9% total CPU use across the four vCPUs and 45.6% GPU use. The other models averaged roughly 61% to 63% CPU use. This suggests that my 8B path is strongly limited by CPU work or partial offload. The runner command does not expose the GPU-layer count, and the benchmark account could not read the Docker logs, so I could not confirm the exact cause.
 
+## My real usage tests with Frigate and LLM Vision
+
+I walked around the house and carried out normal activities while Frigate and Home Assistant LLM Vision were active. Ollama stayed on `qwen3-vl:8b-instruct` with an 8192-token context. I observed existing application traffic without adding benchmark requests during these sessions.
+
+For the second session, I enabled the Ollama provider's debug logger in Frigate 0.18.2 to record image counts and request options:
+
+```yaml
+logger:
+  logs:
+    frigate.genai.plugins.ollama: debug
+```
+
+I matched those logs with Ollama's request timings. Times below are local to Europe/Paris on 9 November 2026. API durations are measured on the Ollama server; they do not include the full time until a result appears in an application.
+
+| Session | Observed inference calls | HTTP 200 | HTTP 400 | Median successful API duration | Longest successful API duration |
+|---|---:|---:|---:|---:|---:|
+| First | 14 | 10 | 4 | 4.04 s | 17.27 s |
+| Second| 8 | 6 | 2 | 9.335 s | 26.27 s |
+
+These samples contain different requests, so I do not interpret the second session's higher median as a performance regression. HTTP 200 confirms a completed request, not an accurate description.
+
+### What the Frigate debug logs showed
+
+I matched six of the second session's eight calls to Frigate. The other two used `/api/chat`; I have not confirmed their source with Home Assistant logs.
+
+| Frigate request | Images | Input tokens | API duration | Result |
+|---|---:|---:|---:|---|
+| Object description | 1 | 1 085 | 3.40 s | HTTP 200 |
+| Structured review | 9 | 10 383 | 0.35 s | Context exceeded |
+| Object description | 7 | 7 348 | 15.27 s | HTTP 200 |
+| Object description | 6 | 6 370 | 26.27 s | HTTP 200 |
+| Structured review | 37 | 39 541 | 2.14 s | Context exceeded |
+| Structured review | 3 | 4 266 | 17.56 s | HTTP 200 |
+
+Both rejected calls in this session came from structured reviews. Frigate sent `num_ctx: 8192`, `num_predict: 256`, `temperature: 0.1` and `keep_alive: 24h` on all six calls. The configured context matched the one loaded in Ollama, but the nine-image and 37-image requests exceeded it.
+
+The first session's four rejected requests contained 10426, 36579, 18772 and 44636 tokens. Matching timestamps and token counts confirmed that these also came from Frigate. My longer Frigate log export contained 393 context-limit errors between 6 and 9 November, so the problem predates these tests.
+
+The six-image request reached Frigate's provider at 17:23:00.508 and began in the Ollama runner at 17:23:11.826. Its runner processing took about 14.96 seconds. The roughly 11.3-second delay before processing is consistent with waiting behind the preceding request; I cannot assign every part of that delay to a specific stage from these logs alone.
+
+### GPU readings and camera errors
+
+I sampled `nvidia-smi` approximately every ten seconds during the real usage sessions. These are sampled maxima, so shorter peaks may have been missed.
+
+| Reading | First session | Second session |
+|---|---:|---:|
+| VRAM throughout sampled readings | 7 296 MiB | 7 296 MiB |
+| Highest sampled GPU utilisation | 100% | 100% |
+| Highest sampled GPU temperature | 62 °C | 64 °C |
+| Highest sampled GPU power | 125.21 W | 123.39 W |
+
+The second Frigate export also showed three FFmpeg crashes across two camera streams, with hardware-frame synchronisation and download errors. My configuration uses `preset-vaapi`. These errors need a separate decoding investigation; the logs do not establish that Ollama caused them.
+
+### What I plan to test next
+
+I will temporarily disable `review.genai` on the cameras where it is enabled and measure object descriptions on their own. I will then compare single-image object descriptions using `use_snapshot: true`. That setting affects object descriptions, not the images sent for review summaries, and removes the movement information available from a sequence.
+
+I am keeping the 8192-token context, one parallel request and one loaded model for that comparison. I have not applied the proposed review or snapshot changes yet. I also want to test decoding without hardware acceleration on one affected camera while watching CPU use.
+
+I have kept private camera images, credentials and raw logs out of this wiki. These sessions measure request completion and latency; I have not scored the descriptions for accuracy or measured streaming TTFT.
+
 ## What I am running now
 
 For now, I am keeping `qwen3-vl:8b-instruct` in production. It already works with Frigate and Home Assistant and finished second on the real photographs. Before replacing it, I want to repeat the comparison with a few anonymised camera frames.
@@ -177,7 +238,7 @@ Requests without an explicit `keep_alive` expired after about five minutes. I st
 
 ### Context
 
-My server loaded `num_ctx=8192`. The text prompts used 222 to 245 tokens, and the Qwen image prompt used up to 1079. If my real Home Assistant prompts stay below approximately 3000 tokens, I will test `num_ctx=4096` to see how much VRAM it frees.
+My server loaded `num_ctx=8192`. The controlled text prompts used 222 to 245 tokens, and the Qwen image prompt used up to 1079. My later Frigate tests reached 7348 input tokens on a successful request and exceeded 8192 on several rejected requests. I am keeping the current context while investigating image counts; reducing it to 4096 would reject some requests that currently succeed.
 
 ### Parallelism and memory
 
@@ -188,7 +249,7 @@ I keep `OLLAMA_NUM_PARALLEL` and `OLLAMA_MAX_LOADED_MODELS` at `1`. My `nvidia-s
 - I took one hot measurement and used one synthetic image per model. These results describe my test run, not a statistical average.
 - My real-photo follow-up used three photographs and one prompt per photograph. That sample is too small to measure production accuracy.
 - My repeated SSH run measured three hot text requests per model, but only one request for each photograph.
-- My image test checks basic shapes, colours and OCR. It does not measure performance on real surveillance footage.
+- My synthetic image test checks basic shapes, colours and OCR. The later household sessions measure real application traffic, but I have not evaluated the accuracy of their descriptions.
 - I left Frigate and Home Assistant active, so their requests may have caused some contention.
 - Each model uses a different tokenizer, so tokens per second do not compare useful text output exactly.
 - During the first run, I could not read total GPU use for the alternative models without system access to `nvidia-smi`.
@@ -199,4 +260,6 @@ Official references:
 - [Ollama Chat API](https://docs.ollama.com/api/chat)
 - [Ollama FAQ: keep-alive, context and parallelism](https://github.com/ollama/ollama/blob/main/docs/faq.mdx)
 - [Frigate GenAI documentation](https://docs.frigate.video/configuration/genai/genai_config/)
+- [Frigate object descriptions and snapshot behaviour](https://docs.frigate.video/configuration/genai/genai_objects/)
+- [Frigate GPU troubleshooting](https://docs.frigate.video/troubleshooting/gpu/)
 
