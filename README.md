@@ -130,7 +130,7 @@ Other Services (LXC)
 
 ```
 CPU : Intel i5-6500
-RAM : 8 GB
+RAM : 32 GB
 Storage
   • 256 GB SSD (OS)
   • 3 × 2 TB 2.5" HDD (RAIDZ1)

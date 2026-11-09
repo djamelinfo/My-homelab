@@ -62,7 +62,7 @@ I have three CI job slots across the two runners: one on the main server and two
 
 ## How my jobs run
 
-I access Gitea through its web interface or a Git client over HTTP. Gitea stores its database in MySQL. Both runners poll Gitea for work and send their results back to it.
+Gitea stores its database in MySQL. Both runners poll Gitea for work and send their results back to it.
 
 Runner 1 starts its job container through the Docker daemon in LXC1. The `lenovo` runner uses the Docker daemon in LXC2 and can run two job containers at once. Each job therefore runs on the server hosting its runner.
 
