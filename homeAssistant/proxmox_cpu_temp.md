@@ -19,8 +19,8 @@ nano proxomox_cpu_temp.sh
 #!/bin/bash
 
 # Home Assistant Settings
-url_base="http://192.168.0.123:8123/api/states"
-token="asdfaGDfdsgfcCI6IkpX-dUrka1Eis"
+url_base="http://HOME_ASSISTANT_IP:8123/api/states"
+token="REPLACE_WITH_LONG_LIVED_ACCESS_TOKEN"
 
 # Server name
 srv_name="hp"
