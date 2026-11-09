@@ -1,6 +1,6 @@
-# My local AI stack
+# Local AI in my homelab
 
-- [My Ollama benchmark, 9 November 2026](ollama-benchmark-2026-11-09.md)
+I run Ollama on a Debian 13 VM with an NVIDIA Quadro RTX 4000. Its 8 GB of VRAM serve Open WebUI, Frigate image descriptions and Home Assistant LLM Vision. Frigate runs in its own LXC container and Home Assistant in a separate VM; both reach Ollama over the LAN.
 
 ## Architecture
 
@@ -23,100 +23,90 @@ flowchart LR
     HA -->|LAN API| Ollama
 ```
 
-I run Ollama and Open WebUI in a Debian 13 VM. Frigate runs in an LXC container, while Home Assistant runs in another VM. Both use my Ollama server over the LAN for image analysis.
-
-| Component | Current configuration |
+| Component | Configuration |
 |---|---|
 | Hypervisor | Proxmox |
-| AI VM | Debian 13 minimal |
+| AI VM | Debian 13 minimal, 4 vCPUs |
 | GPU | NVIDIA Quadro RTX 4000, 8 GB |
 | Inference server | Ollama in Docker |
 | Production model | `qwen3-vl:8b-instruct`, Q4_K_M |
-| Context loaded | `8192` tokens |
-| Parallel requests | `1` |
-| Loaded models | `1` |
-| Local applications | Ollama, Open WebUI |
-| Remote Ollama clients | Frigate 0.18.2, Home Assistant LLM Vision |
+| Ollama context | 8192 tokens |
+| Parallel requests / loaded models | 1 / 1 |
+| Clients | Open WebUI, Frigate 0.18.2, Home Assistant LLM Vision |
 
-## Ollama settings
+## Running within 8 GB of VRAM
 
-This is the Docker configuration I intend to use:
+With the production model loaded, `nvidia-smi` reports about 7296 MiB in use out of 8192 MiB. I keep `OLLAMA_NUM_PARALLEL=1` and `OLLAMA_MAX_LOADED_MODELS=1` to stay within that memory budget. Requests wait when several cameras need descriptions at once.
+
+Frigate sends `keep_alive: 24h` with its requests. Keeping the model resident avoids a reload that took roughly 17 to 19 seconds in my tests. This is a client setting: requests from other clients can use a different lifetime or fall back to the server default.
+
+## Frigate image handling
+
+The main problem was the number of images sent in a single request. A review containing 37 images needed 39541 tokens, far beyond the 8192-token context. Some object descriptions also exceeded the limit with eight or ten images.
+
+I now use separate values for Frigate's review planning and the context passed to Ollama. This fragment belongs in my existing Ollama provider configuration:
 
 ```yaml
-services:
-  ollama:
-    image: ollama/ollama:latest
-    restart: unless-stopped
-    gpus: all
-    ports:
-      - "11434:11434"
-    volumes:
-      - /srv/ai/ollama:/root/.ollama
-    environment:
-      OLLAMA_KEEP_ALIVE: "24h"
-      OLLAMA_MAX_LOADED_MODELS: "1"
-      OLLAMA_NUM_PARALLEL: "1"
-      OLLAMA_MAX_QUEUE: "10"
+provider_options:
+  keep_alive: 24h
+  options:
+    num_ctx: 4096
+
+runtime_options:
+  options:
+    num_ctx: 8192
+    num_predict: 256
+    temperature: 0.1
 ```
 
-I use `num_ctx: 8192` in the client request or model configuration when I need the full context.
+In Frigate 0.18.2, the provider value feeds the review frame budget, while the runtime value is sent to Ollama. My subsequent reviews used three images each and completed successfully. Ollama still runs with an 8192-token context. This workaround relies on the behaviour of that Frigate version.
 
-> [!IMPORTANT]
-> During my benchmark, requests without `keep_alive` expired after about five minutes. An earlier client request had kept the model loaded for 24 hours. My container may still be using `OLLAMA_KEEP_ALIVE=5m`, so I need to check its environment after recreating it.
+For FrontCam, I also enabled snapshots in the existing camera configuration:
 
-## Capacity and operating rules
+```yaml
+cameras:
+  FrontCam:
+    objects:
+      genai:
+        use_snapshot: true
+```
 
-My `nvidia-smi` snapshot showed `7296 MiB / 8192 MiB` in use, leaving `896 MiB` free. Ollama `/api/ps` reported `5.74 GiB` for the model itself, but that figure does not include all the GPU memory used by the process.
+Object descriptions then use a single snapshot, losing the movement context of a sequence. Review summaries have their own image selection. In the latest test, all four single-image descriptions and all five three-image reviews completed. One eight-image object request still exceeded the context limit, so the issue remains for multi-image requests elsewhere in the setup.
 
-- I keep `OLLAMA_NUM_PARALLEL` at `1`.
-- I keep `OLLAMA_MAX_LOADED_MODELS` at `1`.
-- I use the 24-hour lifetime while remote requests stay responsive and the server reports no out-of-memory errors.
-- If GPU memory becomes tight, I will reduce the lifetime to between 30 minutes and 2 hours.
-- I keep `num_ctx=8192` while investigating oversized Frigate requests. My real usage tests already exceed a 4096-token context.
-- I avoid switching models during a Frigate or Home Assistant vision request. Ollama loads one model at a time, so a new model evicts the production model.
+## Model comparison
 
-## Benchmark status
+I compared four installed models using a synthetic image and three public photographs, then measured warm performance directly on the Debian VM.
 
-I ran a repeated benchmark locally on Debian while sampling GPU and CPU use every 200 ms.
-
-| Model | Combined image score | Text generation | Median vision TTFT | Peak VRAM from `nvidia-smi` |
+| Model | Image checks passed, out of 13 | Text generation | Median vision TTFT | Peak VRAM |
 |---|---:|---:|---:|---:|
-| `qwen3.5:9b` | 12/13 | 43.96 tok/s | 0.719 s | 6 610 MiB |
-| `qwen3-vl:8b-instruct` | 11/13 | 32.35 tok/s | 2.188 s | 7 244 MiB |
-| `qwen3-vl:4b-instruct` | 10/13 | 86.71 tok/s | 1.125 s | 5 236 MiB |
-| `gemma4:e2b` | 9/13 | 140.51 tok/s | 0.250 s | 3 264 MiB |
+| `qwen3.5:9b` | 12 | 43.96 tok/s | 0.719 s | 6610 MiB |
+| `qwen3-vl:8b-instruct` | 11 | 32.35 tok/s | 2.188 s | 7244 MiB |
+| `qwen3-vl:4b-instruct` | 10 | 86.71 tok/s | 1.125 s | 5236 MiB |
+| `gemma4:e2b` | 9 | 140.51 tok/s | 0.250 s | 3264 MiB |
 
-`qwen3.5:9b` was the most accurate model and answered the image tests about three times faster than the 8B. The 8B used almost all four vCPUs during text generation while averaging only 45.6% GPU use. For now, I am keeping the 8B in production. I want to compare both models on anonymised Frigate frames and my exact Home Assistant prompts before I switch.
+The 9B passed the most checks in this small image set and used less VRAM than my production 8B. Gemma was fastest, but made more mistakes on the photographs. I still use `qwen3-vl:8b-instruct` for Frigate and LLM Vision; the other models were compared with controlled prompts.
 
-## My tests around the house
-
-I also tested normal use by walking around the house while Frigate and Home Assistant LLM Vision remained active. Across two sessions, I observed 22 inference calls: 16 returned HTTP 200 and 6 were rejected for exceeding the 8192-token context. Matching Frigate logs confirmed that all six rejected calls came from Frigate. I have not yet attributed every successful call to an application or scored the descriptions for accuracy.
-
-The second session's debug logs showed the difference between object descriptions and review summaries. One image used 1085 tokens and completed in 3.40 seconds. A structured review with 37 images required 39541 tokens and was rejected. A six-image object description took 26.27 seconds, including about 11.3 seconds before processing began in the model runner.
-
-VRAM stayed at 7296 MiB in the sampled readings. My next test is to temporarily disable review GenAI on the cameras where it is enabled, measure object descriptions on their own, and then compare single-image descriptions. I have not applied those changes yet. Camera decoding errors also need investigation separately from Ollama.
-
-The [real usage results](ollama-benchmark-2026-11-09.md#my-real-usage-tests-with-frigate-and-llm-vision) include both sessions and the matched image counts.
+The [benchmark article](ollama-benchmark-2026-11-09.md) covers the measurements, image checks and Frigate context errors.
 
 ## Monitoring
 
-On my Debian VM, I check total GPU use with:
+I use the NVIDIA driver readings for total GPU memory:
 
 ```bash
 nvidia-smi
 ```
 
-I check which model Ollama has loaded with:
+Ollama exposes the loaded model and installed models through its API. Replace `OLLAMA_HOST` with the server address:
 
 ```bash
 curl -s http://OLLAMA_HOST:11434/api/ps | jq
-```
-
-I list the installed models with:
-
-```bash
 curl -s http://OLLAMA_HOST:11434/api/tags | jq
 ```
 
-My [Ollama benchmark](ollama-benchmark-2026-11-09.md) has the full measurements and model rankings.
+For image counts and request options in Frigate:
 
+```yaml
+logger:
+  logs:
+    frigate.genai.plugins.ollama: debug
+```
