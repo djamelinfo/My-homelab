@@ -1,6 +1,6 @@
-# Local AI stack
+# My local AI stack
 
-- [Ollama benchmark, 9 November 2026](ollama-benchmark-2026-11-09.md)
+- [My Ollama benchmark, 9 November 2026](ollama-benchmark-2026-11-09.md)
 
 ## Architecture
 
@@ -23,7 +23,7 @@ flowchart LR
     HA -->|LAN API| Ollama
 ```
 
-The Debian VM runs Ollama and Open WebUI. Frigate is an LXC service, and Home Assistant runs in another VM. Both call Ollama over the LAN for image analysis.
+I run Ollama and Open WebUI in a Debian 13 VM. Frigate runs in an LXC container, while Home Assistant runs in another VM. Both use my Ollama server over the LAN for image analysis.
 
 | Component | Current configuration |
 |---|---|
@@ -40,7 +40,7 @@ The Debian VM runs Ollama and Open WebUI. Frigate is an LXC service, and Home As
 
 ## Ollama settings
 
-The intended Docker configuration is:
+This is the Docker configuration I intend to use:
 
 ```yaml
 services:
@@ -59,25 +59,25 @@ services:
       OLLAMA_MAX_QUEUE: "10"
 ```
 
-Use `num_ctx: 8192` in the client request or model configuration when the full context is required.
+I use `num_ctx: 8192` in the client request or model configuration when I need the full context.
 
 > [!IMPORTANT]
-> During the benchmark, requests that omitted `keep_alive` expired after about five minutes. A previous client request had kept the model loaded for 24 hours. The container may still be using `OLLAMA_KEEP_ALIVE=5m`, so check its environment after recreating it.
+> During my benchmark, requests without `keep_alive` expired after about five minutes. An earlier client request had kept the model loaded for 24 hours. My container may still be using `OLLAMA_KEEP_ALIVE=5m`, so I need to check its environment after recreating it.
 
 ## Capacity and operating rules
 
-The supplied `nvidia-smi` snapshot showed `7296 MiB / 8192 MiB` in use, leaving `896 MiB` free. Ollama `/api/ps` reported `5.74 GiB` for the model itself, which does not include all GPU memory used by the process.
+My `nvidia-smi` snapshot showed `7296 MiB / 8192 MiB` in use, leaving `896 MiB` free. Ollama `/api/ps` reported `5.74 GiB` for the model itself, but that figure does not include all the GPU memory used by the process.
 
-- Leave `OLLAMA_NUM_PARALLEL` at `1`.
-- Leave `OLLAMA_MAX_LOADED_MODELS` at `1`.
-- Use the 24-hour lifetime while remote requests stay responsive and the server reports no out-of-memory errors.
-- If GPU memory becomes tight, reduce the lifetime to between 30 minutes and 2 hours.
-- Try `num_ctx=4096` only if real `prompt_eval_count` values stay comfortably below roughly 3000 tokens.
-- Do not switch models during a Frigate or Home Assistant vision request. Since Ollama loads one model at a time, the new model evicts the production model.
+- I keep `OLLAMA_NUM_PARALLEL` at `1`.
+- I keep `OLLAMA_MAX_LOADED_MODELS` at `1`.
+- I use the 24-hour lifetime while remote requests stay responsive and the server reports no out-of-memory errors.
+- If GPU memory becomes tight, I will reduce the lifetime to between 30 minutes and 2 hours.
+- I will try `num_ctx=4096` only if real `prompt_eval_count` values stay comfortably below roughly 3000 tokens.
+- I avoid switching models during a Frigate or Home Assistant vision request. Ollama loads one model at a time, so a new model evicts the production model.
 
 ## Benchmark status
 
-A repeated benchmark ran locally on Debian while GPU and CPU use were sampled every 200 ms.
+I ran a repeated benchmark locally on Debian while sampling GPU and CPU use every 200 ms.
 
 | Model | Combined image score | Text generation | Median vision TTFT | Peak VRAM from `nvidia-smi` |
 |---|---:|---:|---:|---:|
@@ -86,27 +86,27 @@ A repeated benchmark ran locally on Debian while GPU and CPU use were sampled ev
 | `qwen3-vl:4b-instruct` | 10/13 | 86.71 tok/s | 1.125 s | 5 236 MiB |
 | `gemma4:e2b` | 9/13 | 140.51 tok/s | 0.250 s | 3 264 MiB |
 
-`qwen3.5:9b` was the most accurate model and answered the image tests about three times faster than the 8B. The 8B used almost all four vCPUs during text generation while averaging only 45.6% GPU use. Keep it in production until both models have been compared on anonymised Frigate frames and the exact Home Assistant prompts.
+`qwen3.5:9b` was the most accurate model and answered the image tests about three times faster than the 8B. The 8B used almost all four vCPUs during text generation while averaging only 45.6% GPU use. For now, I am keeping the 8B in production. I want to compare both models on anonymised Frigate frames and my exact Home Assistant prompts before I switch.
 
 ## Monitoring
 
-On the Debian VM, check total GPU use with:
+On my Debian VM, I check total GPU use with:
 
 ```bash
 nvidia-smi
 ```
 
-Check which model Ollama has loaded:
+I check which model Ollama has loaded with:
 
 ```bash
 curl -s http://OLLAMA_HOST:11434/api/ps | jq
 ```
 
-List the installed models:
+I list the installed models with:
 
 ```bash
 curl -s http://OLLAMA_HOST:11434/api/tags | jq
 ```
 
-See the [Ollama benchmark](ollama-benchmark-2026-11-09.md) for the measurements and model rankings.
+My [Ollama benchmark](ollama-benchmark-2026-11-09.md) has the full measurements and model rankings.
 

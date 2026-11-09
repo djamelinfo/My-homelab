@@ -29,10 +29,9 @@ Storage Layout
 
 Virtual Machines (VMs)
 - [TrueNAS](https://www.truenas.com/) for storage management
-- Debian 13 VM with GPU passthrough running:
-  - [Local AI stack](ia/README.md): [Ollama](https://ollama.com/) and Open WebUI
-    - Frigate 0.18 and Home Assistant LLM Vision run elsewhere and call Ollama over the LAN.
-    - [Ollama benchmark, 9 November 2026](ia/ollama-benchmark-2026-11-09.md)
+- I use a Debian 13 VM with GPU passthrough for:
+  - [My local AI stack](ia/README.md): [Ollama](https://ollama.com/) and Open WebUI
+    - [My Ollama benchmark, 9 November 2026](ia/ollama-benchmark-2026-11-09.md)
   - [Immich machine learning](https://docs.immich.app/guides/remote-machine-learning/)
   - [Open WebUi](https://docs.openwebui.com/) 
   - <img src="images/openwebui.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
