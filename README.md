@@ -116,7 +116,7 @@ Storage
 Virtual Machines (VMs)
 - [Home Assistant](https://www.home-assistant.io/)
 - Debian VM (website hosting)
-  - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
+  - NPMplus + CrowdSec AppSec: external reverse proxy and WAF
   - [Nginx](https://nginx.org/en/docs/beginners_guide.html): hosting my website
 
 Other Services (LXC)
@@ -170,6 +170,10 @@ Running Services (Docker)
 - UniFi U6 LR: long-range WiFi 6 access point for main coverage
 - UniFi U6 IW: in-wall WiFi 6 access point for a room/office
 - UniFi Switch USW 24 PoE: PoE for APs and devices like Raspberry Pi 5
+
+**Architecture:** Internet → Cloudflare → UniFi Gateway → NPMplus + CrowdSec → Internal Reverse Proxy → Services.
+
+See [the architecture diagram and short explanation](npmplus/README.md).
 
 ## Power Equipment
 
