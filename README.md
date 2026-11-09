@@ -95,8 +95,7 @@ Other Services (LXC)
 - <img src="images/immich.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
 - [NextcloudPi](https://ownyourbits.com/nextcloudpi/): self-hosted files/collab. 
 - <img src="images/nextcloud.png" alt="Description" style="box-shadow: 20px 20px 20px \#888;border-radius: 5px;" width="300" height="200">
-- [Gitea](https://gitea.io/en-us/): self-hosted Git.
-- <img src="images/gitea.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200">
+- [My Gitea setup](gitea/README.md): self-hosted Git and Docker image registry, with MySQL and a local CI runner (capacity 1).
 - [Docmost](https://docmost.com/docs/category/self-hosting/): an open-source collaborative wiki and documentation software. 
 - <img src="images/docmost.png" alt="Description" style="box-shadow: 0px 0px 10px \#888;border-radius: 5px;" width="300" height="200"> 
 - [karakeep](https://github.com/karakeep-app/karakeep): is a self-hostable bookmark-everything app with a touch of AI for the data hoarders out there.
@@ -124,6 +123,7 @@ Other Services (LXC)
 - [Nginx Proxy Manager](https://nginxproxymanager.com/): reverse proxy
 - [Pi-hole](https://pi-hole.net/): network-wide ad blocker with DNS-Over-HTTPS
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden): password manager
+- [Gitea CI runner](gitea/README.md): my second runner, `lenovo`, with capacity 2 and its own Docker daemon.
 
 ## Third Server ▸ HP ProDesk 400 G4
 
